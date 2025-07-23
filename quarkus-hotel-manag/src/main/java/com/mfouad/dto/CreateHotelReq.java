@@ -1,9 +1,11 @@
 package com.mfouad.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import java.io.InputStream;
+import java.util.List;
+
+import org.jboss.resteasy.annotations.providers.multipart.PartType;
+
+import jakarta.ws.rs.FormParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,23 +17,27 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CreateHotelReq {
 	
-	@NotBlank(message = "name may not be blank")
-	private String name;
+	@FormParam("hotel")
+    @PartType("application/json")
+	HotelJsonReq hotelJsonReq;
 	
-	private Long countryId; // Assuming this is a foreign key to a Country entity;
-	private String description;
-	private double pricePerNight;
-	private boolean active;
-	@Min(value = 1, message = "stars must be at least 1")
-	@Max(value = 5, message = "stars must be at most 5")
-	private short stars; // Assuming this is a rating out of 5 stars
-	
-	@NotBlank(message = "address may not be blank")
-	private String address;
+	 @FormParam("files")
+	    @PartType("application/octet-stream") // Accepts binary data
+	    public List<FilePart> files;
+	 
+	 
+		@Data
+		@AllArgsConstructor
+		@NoArgsConstructor
+		@Builder
+		// This class represents a file part in the multipart request
+		// It can be used to upload files along with the hotel data
+	 public static class FilePart {
+	        @PartType("application/octet-stream")
+	        public InputStream file;
 
-
-	@Min(value = 3, message = "rooms must be at least 1")
-	private short rooms;
+	        public String fileName;
+	    }
 	
 	
 }
