@@ -28,7 +28,7 @@ public class CountryRestControllerTest {
 	    @Test
 	    void testCountriesEndpoint() {
 	        given()
-	          .when().get("/countries")
+	          .when().get("/")
 	          .then()
 	             .statusCode(200);
 	    }
@@ -40,7 +40,7 @@ public class CountryRestControllerTest {
 	    	
 	    	Country res=
 	    	given()
-	    	.when().get("/countries/1")
+	    	.when().get("/1")
 	    	.then()
 	    	.statusCode(200)
 	    	.body("name", containsString(c.getName())
@@ -51,7 +51,7 @@ public class CountryRestControllerTest {
 	    	assertThat(res.isActive()).isEqualTo(c.isActive());
 	    	
 	    	given()
-	    	.when().get("/countries/2")
+	    	.when().get("/2")
 	    	.then()
 	    	.statusCode(404);
 	    }

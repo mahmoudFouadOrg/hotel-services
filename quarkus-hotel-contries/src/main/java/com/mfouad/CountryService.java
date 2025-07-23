@@ -22,7 +22,7 @@ public class CountryService {
             throw new IllegalArgumentException("Country name cannot be null or empty");
         }
         
-        Country country = Country.builder().name(countryReq.getName()).build();
+        Country country = Country.builder().name(countryReq.getName()).active(true).build();
     	entityManager.persist(country);
     	entityManager.flush();
     }
@@ -36,6 +36,21 @@ public class CountryService {
 			
 			return c;
 				
+	}
+	
+	@Transactional()
+	public void activateDeactive(Long id) {
+		
+		Country c= entityManager.find(Country.class, id);
+		
+		if(c==null)
+			throw new CountryNotFoundException("Country with id " + id + " not found");
+		
+		c.setActive(!c.isActive());
+		entityManager.merge(c);
+		entityManager.flush();
+		
+		
 	}
 	
 	public List<Country> getAcitveCountries() {

@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -26,7 +27,7 @@ public class CountryRestController {
 
 	// Example endpoint
 	 @GET
-	 @Path("/countries")
+	 @Path("")
 	 @Produces(MediaType.APPLICATION_JSON)
 	 public List<Country> getAllCountries() {
 		 
@@ -34,7 +35,7 @@ public class CountryRestController {
 	 }
 	 
 	 @GET
-	 @Path("/countries/active")
+	 @Path("/active")
 	 @Produces(MediaType.APPLICATION_JSON)
 	 public List<Country> getAllActiveCountries() {
 		 
@@ -42,7 +43,7 @@ public class CountryRestController {
 	 }
 	 
 	 @POST
-	 @Path("/countries")
+	 @Path("")
 	 @Produces(MediaType.APPLICATION_JSON)
 		public Response createNewCountry(CountryReq countryReq) {
 
@@ -53,11 +54,20 @@ public class CountryRestController {
 	 }
 	 
 	 @GET
-	 @Path("/countries/{countryid}")
+	 @Path("/{countryid}")
 	 @Produces(MediaType.APPLICATION_JSON)
 	 public Response getCountryName(@PathParam ("countryid") Long id) {
 		 
          return Response.ok(countryService.getCountryNameById(id)).build();
+	 }
+	 
+	 @PUT
+	 @Path("/{countryid}/de-active")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 public Response active(@PathParam ("countryid") Long id) {
+		 countryService.activateDeactive(id);
+		 
+		 return Response.ok().build();
 	 }
 
 }
