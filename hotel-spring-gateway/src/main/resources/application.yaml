@@ -1,0 +1,43 @@
+server:
+  port: 7777
+spring:
+  resilience4j.circuitbreaker:
+   instances:
+    hotelsCircuiteBreaker:
+     registerHealthIndicator: true
+     slidingWindowSize: 3
+     failureRateThreshold: 80
+     waitDurationInOpenState: 10s
+     permittedNumberOfCallsInHalfOpenState: 3
+     minimumNumberOfCalls: 2
+  cloud:
+      gateway:
+        routes:
+        - id: HOTEL-SERVICE
+          uri: ${hotel_managment_url:http://localhost:8083}
+          predicates:
+          - Path=/hotels
+          filters:
+          - RewritePath=/hotels,/
+        - id: HOTEL-SERVICE-SEGMENT
+          uri: ${hotel_managment_url:http://localhost:8083}
+          predicates:
+          - Path=/hotels/**
+          filters:
+          - RewritePath=/hotels/(?<segment>.*),/$\{segment}
+          - name: CircuitBreaker
+            args:
+             name: hotelsCircuiteBreaker
+             fallbackUri: forward:/fallback
+        - id: countries-sevices
+          uri: ${countries_url:http://localhost:8082}
+          predicates:
+          - Path=/countries
+          filters:
+          - RewritePath=/countries,/
+        - id: countries-SERVICES-SEGMENT
+          uri: ${countries_url:http://localhost:8082}
+          predicates:
+          - Path=/countries/**
+          filters:
+          - RewritePath=/countries/(?<segment>.*),/$\{segment}
