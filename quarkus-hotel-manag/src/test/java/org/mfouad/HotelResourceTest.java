@@ -31,6 +31,7 @@ public class HotelResourceTest {
 		.when().post("/").then()
 		.statusCode(400);
 	}
+	
 
 	
 }

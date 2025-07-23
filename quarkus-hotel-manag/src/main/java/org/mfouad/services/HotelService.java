@@ -32,5 +32,9 @@ public class HotelService {
 		// You would typically persist the hotel entity here
 		
 	}
+	
+	private void UploadFiles() {
+		
+	}
 
 }
