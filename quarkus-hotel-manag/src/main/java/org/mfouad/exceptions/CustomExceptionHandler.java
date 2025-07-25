@@ -10,8 +10,8 @@ public class CustomExceptionHandler implements ExceptionMapper<RuntimeException>
 	public jakarta.ws.rs.core.Response toResponse(RuntimeException exception) {
 		
 		
-		return jakarta.ws.rs.core.Response.status(jakarta.ws.rs.core.Response.Status.NOT_FOUND)
-				.entity("Country not found: " + exception.getMessage()).build();
+		return jakarta.ws.rs.core.Response.status(jakarta.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR)
+				.entity( exception.getMessage()).build();
 	}
 
 }

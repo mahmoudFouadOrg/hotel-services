@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mfouad</groupId>
 	<artifactId>quarkus-hotel-manag</artifactId>
@@ -62,30 +60,46 @@
 		</dependency>
 		<dependency>
 			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-resteasy-client-jackson</artifactId>
+		</dependency>
+		
+     <!-- Use the latest version -->
+		<!--<dependency>
+    <groupId>com.github.f4b6a3</groupId>
+    <artifactId>ulid-java</artifactId>
+    <version>3.0.0</version>
+</dependency>-->
+		
+		<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-resteasy-client</artifactId>
+</dependency>
+
+		<dependency>
+			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-junit5</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
 			<version>1.18.38</version>
-		</dependency>
-
+</dependency>
 		<dependency>
 			<groupId>de.huxhorn.sulky</groupId>
 			<artifactId>de.huxhorn.sulky.ulid</artifactId>
 			<version>8.2.0</version>
 		</dependency>
 		<dependency>
-    <groupId>io.quarkus</groupId>
-    <artifactId>quarkus-hibernate-validator</artifactId>
-</dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-hibernate-validator</artifactId>
+		</dependency>
 
 	</dependencies>
 
@@ -119,8 +133,7 @@
 				<version>${surefire-plugin.version}</version>
 				<configuration>
 					<systemPropertyVariables>
-						<java.util.logging.manager>
-							org.jboss.logmanager.LogManager</java.util.logging.manager>
+						<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
 						<maven.home>${maven.home}</maven.home>
 					</systemPropertyVariables>
 				</configuration>
@@ -138,10 +151,8 @@
 				</executions>
 				<configuration>
 					<systemPropertyVariables>
-						<native.image.path>
-							${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-						<java.util.logging.manager>
-							org.jboss.logmanager.LogManager</java.util.logging.manager>
+						<native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+						<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
 						<maven.home>${maven.home}</maven.home>
 					</systemPropertyVariables>
 				</configuration>

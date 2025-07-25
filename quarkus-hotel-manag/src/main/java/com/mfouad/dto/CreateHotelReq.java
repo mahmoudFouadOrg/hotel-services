@@ -23,7 +23,7 @@ public class CreateHotelReq {
 	
 	 @FormParam("files")
 	    @PartType("application/octet-stream") // Accepts binary data
-	    public List<FilePart> files;
+	    List<HotelFilePart> files;
 	 
 	 
 		@Data
@@ -32,7 +32,7 @@ public class CreateHotelReq {
 		@Builder
 		// This class represents a file part in the multipart request
 		// It can be used to upload files along with the hotel data
-	 public static class FilePart {
+	 public static class HotelFilePart {
 	        @PartType("application/octet-stream")
 	        public InputStream file;
 
