@@ -43,6 +43,10 @@
 			<artifactId>quarkus-elasticsearch-rest-client</artifactId>
 		</dependency>
 		<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-elasticsearch-java-client</artifactId>
+    </dependency>
+		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-arc</artifactId>
 		</dependency>
