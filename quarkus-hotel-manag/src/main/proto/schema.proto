@@ -18,12 +18,6 @@ string hotelName = 8;
 
 } 
 
-
-message HotlesResponse {
-
-  repeated  Hotel hotels =1;
-}
-
 message HotelAcDetivate {
   string hotel_id=1;
   bool status=2;
@@ -34,8 +28,6 @@ message HotelStatus {
 string status=1;
 }
 
-
-
 service HotelManagmentervice {
 
   //unary - synchronous
@@ -45,11 +37,5 @@ service HotelManagmentervice {
   rpc acDeActivate(HotelAcDetivate) returns (stream HotelStatus){}
 
 
-}
-
-
-service HotelSearchService{
-
-  rpc findHotel(Hotel) returns (stream HotlesResponse) {}
 }
 

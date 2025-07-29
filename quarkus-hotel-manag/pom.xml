@@ -15,6 +15,8 @@
 		<quarkus.platform.version>3.24.3</quarkus.platform.version>
 		<skipITs>true</skipITs>
 		<surefire-plugin.version>3.5.3</surefire-plugin.version>
+		<protoc.version>4.31.1</protoc.version>
+		<grpc.version>1.67.1</grpc.version>
 	</properties>
 
 	<dependencyManagement>
@@ -63,17 +65,17 @@
 			<artifactId>quarkus-resteasy-client-jackson</artifactId>
 		</dependency>
 		
-     <!-- Use the latest version -->
+		<!-- Use the latest version -->
 		<!--<dependency>
-    <groupId>com.github.f4b6a3</groupId>
-    <artifactId>ulid-java</artifactId>
-    <version>3.0.0</version>
-</dependency>-->
+		<groupId>com.github.f4b6a3</groupId>
+		<artifactId>ulid-java</artifactId>
+		<version>3.0.0</version>
+		</dependency>-->
 		
 		<dependency>
-    <groupId>io.quarkus</groupId>
-    <artifactId>quarkus-resteasy-client</artifactId>
-</dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-resteasy-client</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>io.quarkus</groupId>
@@ -87,10 +89,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 			<version>1.18.38</version>
-</dependency>
+		</dependency>
 		<dependency>
 			<groupId>de.huxhorn.sulky</groupId>
 			<artifactId>de.huxhorn.sulky.ulid</artifactId>
@@ -100,11 +102,39 @@
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-hibernate-validator</artifactId>
 		</dependency>
+		
+		
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-grpc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java-util</artifactId>
+		</dependency>
 
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+				<version>1.7.1</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>detect</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>${quarkus.platform.group-id}</groupId>
 				<artifactId>quarkus-maven-plugin</artifactId>
@@ -157,6 +187,7 @@
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 

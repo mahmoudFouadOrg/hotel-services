@@ -1,0 +1,63 @@
+PUT active_hotels
+{
+  "mappings": {
+    "properties": {
+      "hotelId": {
+        "type": "keyword"
+      },
+      "countryId": {
+        "type": "keyword"
+      },
+      "address": {
+        "type": "text"
+      },
+      "description": {
+        "type": "text"
+      },
+      "hotelName": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// compine search
+GET active_hotels/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "term": { "countryId": "1" } },
+        { "match": { "hotelName": "name" } }
+      ]
+    }
+  }
+}
+
+
+// search by exact hotel name
+{
+  "query": {
+    "term": {
+      "hotelName.keyword": "Grand Hotel"
+    }
+  }
+}
+
+// full text search
+{
+  "query": {
+    "match": {
+      "hotelName": "Grand Hotel"
+    }
+  }
+}
+
+

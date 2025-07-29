@@ -19,7 +19,11 @@ import com.mfouad.dto.HotelJsonReq;
 import com.mfouad.dto.HotelRes;
 import com.mfouad.dto.UploadFileReq;
 import com.mfouad.dto.UploadFileRes;
+import com.mfouad.proto.Hotel;
+import com.mfouad.proto.HotelManagmenterviceClient;
+import com.mfouad.proto.HotelManagmenterviceGrpc.HotelManagmenterviceBlockingStub;
 
+import io.quarkus.grpc.GrpcClient;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -30,6 +34,9 @@ public class HotelService {
 	@Inject
 	@RestClient
 	FileMangeClientService service;
+	
+	@GrpcClient("hotel-management-grpc")
+	HotelManagmenterviceBlockingStub hotelManagmenterviceClient;
 	
 	
 	   private static final Logger log =  Logger.getLogger(HotelService.class);
@@ -63,6 +70,13 @@ public class HotelService {
 				.build();
 		
 		HotelEntity.persist(hotel);
+		
+		Hotel gropHotel = Hotel.newBuilder().setHotelId(hotel.getId())
+				.setHotelName(hotel.getName())
+				.setDescription(hotel.getDescription()).setPricePerNight((float)hotel.getPricePerNight())
+				.setStars(hotel.getStars()).setRooms(hotel.getRooms())
+				.setAddress(hotel.getAddress()).setCountryId(hotel.getCountryId().toString()).build();
+		hotelManagmenterviceClient.addNewHotel(gropHotel);
 		
 		
 	}

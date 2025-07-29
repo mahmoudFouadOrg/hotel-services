@@ -31,4 +31,6 @@ public class HotelManagmenterviceGrpcImpl extends HotelManagmenterviceImplBase{
 		// TODO Auto-generated method stub
 		super.acDeActivate(request, responseObserver);
 	}
+	
+	
 }
