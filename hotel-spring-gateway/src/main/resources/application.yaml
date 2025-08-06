@@ -1,5 +1,7 @@
 server:
   port: 7777
+  http2:
+   enabled: true
 spring:
   resilience4j.circuitbreaker:
    instances:
@@ -41,3 +43,11 @@ spring:
           - Path=/countries/**
           filters:
           - RewritePath=/countries/(?<segment>.*),/$\{segment}
+        - id: user-hotels-services-SEGMENT
+          uri: ${user_hotel_url:http://localhost:9000}
+          predicates:
+          - Path=/user/hotels/search**
+          filters:
+          - name: JsonToProtobufRequest
+            args:
+             name: com.mfouad.proto.HotelSearch

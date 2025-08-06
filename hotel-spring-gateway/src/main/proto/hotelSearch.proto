@@ -1,0 +1,44 @@
+syntax="proto3";
+
+package com.mfouad.proto ;
+
+option java_package = "com.mfouad.proto";
+option java_multiple_files= true ;
+
+message Hotel {
+
+string hotel_id=1;
+string countryId = 2;
+string address = 3;
+string description = 4;
+float pricePerNight = 5;
+int32 stars = 6;
+int32 rooms =7;
+string hotelName = 8;
+
+} 
+
+
+message HotlesResponse {
+
+  repeated  Hotel hotels =1;
+}
+
+message HotelAcDetivate {
+  string hotel_id=1;
+  bool status=2;
+
+}
+
+message HotelStatus {
+string status=1;
+}
+
+
+
+
+service HotelSearchService{
+
+  rpc findHotel(Hotel) returns (stream HotlesResponse) {}
+}
+
