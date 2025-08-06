@@ -1,0 +1,34 @@
+// src/main/resources/proto/hotelSearch.proto
+syntax = "proto2";
+
+package com.mfouad.proto;
+
+option java_package = "com.mfouad.proto";
+option java_multiple_files = true;
+
+message HotelSearchReq {
+  optional string hotelName = 1;
+  optional string countryId = 2;
+  optional string address = 3;
+  optional float pricePerNight = 4;
+  optional int32 stars = 5;
+}
+
+message Hotel {
+  optional string hotel_id = 1;
+  optional string countryId = 2;
+  optional string address = 3;
+  optional string description = 4;
+  optional float pricePerNight = 5;
+  optional int32 stars = 6;
+  optional int32 rooms = 7;
+  optional string hotelName = 8;
+}
+
+message HotlesResponse {
+  repeated Hotel hotels = 1;
+}
+
+service HotelSearchService {
+  rpc findHotel(HotelSearchReq) returns (HotlesResponse) {}
+}

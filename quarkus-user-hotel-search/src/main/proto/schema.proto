@@ -1,55 +1,47 @@
-syntax="proto3";
+syntax = "proto2";
 
-package com.mfouad.proto ;
+package com.mfouad.proto;
 
 option java_package = "com.mfouad.proto";
-option java_multiple_files= true ;
+option java_multiple_files = true;
 
 message Hotel {
+  optional string hotel_id = 1;
+  optional string countryId = 2;
+  optional string address = 3;
+  optional string description = 4;
+  optional float pricePerNight = 5;
+  optional int32 stars = 6;
+  optional int32 rooms = 7;
+  optional string hotelName = 8;
+}
 
-string hotel_id=1;
-string countryId = 2;
-string address = 3;
-string description = 4;
-float pricePerNight = 5;
-int32 stars = 6;
-int32 rooms =7;
-string hotelName = 8;
-
-} 
-
+message HotelSearchReq {
+  optional string hotelName = 1;
+  optional string countryId = 2;
+  optional string address = 3;
+  optional float pricePerNight = 4;
+  optional int32 stars = 5;
+}
 
 message HotlesResponse {
-
-  repeated  Hotel hotels =1;
+  repeated Hotel hotels = 1;
 }
 
 message HotelAcDetivate {
-  string hotel_id=1;
-  bool status=2;
-
+  optional string hotel_id = 1;
+  optional bool status = 2;
 }
 
 message HotelStatus {
-string status=1;
+  optional string status = 1;
 }
-
-
 
 service HotelManagmentervice {
-
-  //unary - synchronous
-  //client will send one request and server will respond with one response.
-  rpc addNewHotel(Hotel) returns (stream HotelStatus){}
-
-  rpc acDeActivate(HotelAcDetivate) returns (stream HotelStatus){}
-
-
+  rpc addNewHotel(Hotel) returns ( HotelStatus) {}
+  rpc acDeActivate(HotelAcDetivate) returns ( HotelStatus) {}
 }
 
-
-service HotelSearchService{
-
-  rpc findHotel(Hotel) returns (stream HotlesResponse) {}
+service HotelSearchService {
+  rpc findHotel(HotelSearchReq) returns ( HotlesResponse) {}
 }
-

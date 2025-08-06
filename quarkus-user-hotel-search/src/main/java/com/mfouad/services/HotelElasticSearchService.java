@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import com.mfouad.proto.Hotel;
+import com.mfouad.proto.HotelSearchReq;
 import com.mfouad.proto.HotelSearchServiceGrpc.HotelSearchServiceImplBase;
 import com.mfouad.proto.HotlesResponse;
 import com.mfouad.proto.HotlesResponse.Builder;
@@ -44,7 +45,7 @@ public class HotelElasticSearchService extends HotelSearchServiceImplBase {
 	 }
 	 
 	@Override
-	public void findHotel(Hotel request, StreamObserver<HotlesResponse> responseObserver)  {
+	public void findHotel(HotelSearchReq request, StreamObserver<HotlesResponse> responseObserver)  {
 		// TODO Auto-generated method stub
 		StringBuilder query = new StringBuilder("{");
 		query.append("\"query\": {").append("\"bool\": {").append("\"must\": [")

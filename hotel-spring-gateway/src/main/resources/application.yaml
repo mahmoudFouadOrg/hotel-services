@@ -35,9 +35,15 @@ spring:
           - Path=/countries
           filters:
           - RewritePath=/countries,/
-        - id: countries-SERVICES-SEGMENT
-          uri: ${countries_url:http://localhost:8082}
+        - id: hotels_user_search
+          uri: ${hotels_user_search_url:grpc://localhost:9000}
           predicates:
-          - Path=/countries/**
+          - Path=/user/hotels/search
           filters:
-          - RewritePath=/countries/(?<segment>.*),/$\{segment}
+          - name: JsonToGrpc
+            args:
+             protoDescriptor: file:proto/hotelSearch.pb
+             protoFile: file:proto/hotelSearch.proto
+             service: HotelSearchService
+             method: findHotel
+        
