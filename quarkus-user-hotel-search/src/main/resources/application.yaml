@@ -1,0 +1,28 @@
+quarkus:
+  elasticsearch:
+    hosts: "localhost:9200"
+    # auth-header: "Authorization=ApiKey RHRHNlVaZ0JTd054YWNyaGVKQ2o6TlBubzJtWDJOX3pFZ3pNWDB6Qmxldw=="
+    # api-key: "RHRHNlVaZ0JTd054YWNyaGVKQ2o6TlBubzJtWDJOX3pFZ3pNWDB6Qmxldw=="
+
+  kafka:
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: io.quarkus.kafka.client.serialization.JsonObjectDeserializer
+
+kafka:
+  bootstrap.servers: localhost:9092
+
+mp:
+  messaging:
+    incoming:
+      hotel-outbox:
+        topic: balah.public.hotel_outbox
+        connector: smallrye-kafka
+        auto:
+         offset:
+          reset: earliest
+        group:
+         id: user-hotel-search-group
+        key:
+         deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value:
+         deserializer: io.quarkus.kafka.client.serialization.JsonObjectDeserializer

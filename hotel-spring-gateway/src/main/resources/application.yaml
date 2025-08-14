@@ -1,3 +1,7 @@
+logging:
+  level:
+    reactor.netty.http: DEBUG
+    reactor.netty.http.client.HttpClientConnect: DEBUG
 server:
   port: 7777
   http2:
@@ -43,11 +47,15 @@ spring:
           - Path=/countries/**
           filters:
           - RewritePath=/countries/(?<segment>.*),/$\{segment}
-        - id: user-hotels-services-SEGMENT
-          uri: ${user_hotel_url:http://localhost:9000}
+        - id: internal-hotel-search
+          uri: forward:/hotel-search/find  # Internal forwarding
           predicates:
-          - Path=/user/hotels/search**
+            - Path=/user/hotels/search
           filters:
-          - name: JsonToProtobufRequest
-            args:
-             name: com.mfouad.proto.HotelSearch
+            - SetPath=/hotel-search/find
+
+grpc:
+ client:
+  grpc-server:
+   address: static://localhost:9000
+   negotiation-type: plaintext

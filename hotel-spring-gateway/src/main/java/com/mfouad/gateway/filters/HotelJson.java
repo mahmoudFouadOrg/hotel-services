@@ -1,4 +1,4 @@
-package com.mfouad.gateway;
+package com.mfouad.gateway.filters;
 
 import java.io.Serializable;
 

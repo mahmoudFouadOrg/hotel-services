@@ -23,5 +23,6 @@ public class HotelGatewayApplication {
         return new ResponseEntity<>("Service is temporarily unavailable. Please try again later.", HttpStatus.SERVICE_UNAVAILABLE);
     }
 	
+        			
 	
 }

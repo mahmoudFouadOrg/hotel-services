@@ -5,17 +5,18 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.Descriptors.GenericDescriptor;
 
 public class ProtobufUtil {
 	
-	private static final Map<String, Descriptor> descriptorCache = new ConcurrentHashMap<>();
+	private static final Map<String, GenericDescriptor> descriptorCache = new ConcurrentHashMap<>();
 
-    public static Descriptor getDescriptor(String className) throws Exception {
+    public static GenericDescriptor getDescriptor(String className) throws Exception {
         return descriptorCache.computeIfAbsent(className, clz -> {
             try {
-                Class<?> protoClass = Class.forName(clz);
+                Class<?> protoClass = Class.forName(className);
                 Method getDescriptor = protoClass.getMethod("getDescriptor");
-                return (Descriptor) getDescriptor.invoke(null);
+                return (GenericDescriptor) getDescriptor.invoke(null);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to get descriptor for " + clz, e);
             }

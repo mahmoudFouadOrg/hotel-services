@@ -18,6 +18,8 @@
 		<java.version>17</java.version>
 		<spring-cloud.version>2023.0.3</spring-cloud.version>
 		<s.detected.classifier></s.detected.classifier>
+		<protoc.version>4.29.1</protoc.version>
+		<grpc.version>1.69.0</grpc.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -28,54 +30,64 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway</artifactId>
 		</dependency>
+<!--GRPC -->
 
-<!-- gRPC Integration -->
-<!-- https://mvnrepository.com/artifact/net.devh/grpc-server-spring-boot-starter -->
-<dependency>
-    <groupId>net.devh</groupId>
-    <artifactId>grpc-server-spring-boot-starter</artifactId>
-    <version>3.1.0.RELEASE</version>
-</dependency>
+ <dependency> <!-- necessary for Java 9+ -->
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>annotations-api</artifactId>
+      <version>6.0.53</version>
+      <scope>provided</scope>
+    </dependency>
 
-<!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
-<dependency>
-    <groupId>com.google.protobuf</groupId>
-    <artifactId>protobuf-java</artifactId>
-    <version>4.31.1</version>
-</dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-netty-shaded</artifactId>
+     <version>${grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-netty</artifactId>
+     <version>${grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-protobuf</artifactId>
+     <version>${grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-stub</artifactId>
+     <version>${grpc.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>4.29.1</version>
+    </dependency>
+    <dependency>
+      <groupId>net.devh</groupId>
+      <artifactId>grpc-spring-boot-starter</artifactId>
+      <version>3.1.0.RELEASE</version>
+    </dependency>
+    
+    <dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java-util</artifactId>
+			<version>${protoc.version}</version>
+		</dependency>
 
-<!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
-<dependency>
-    <groupId>com.google.protobuf</groupId>
-    <artifactId>protobuf-java</artifactId>
-    <version>4.31.1</version>
-</dependency>
-
-<dependency>
-    <groupId>com.google.protobuf</groupId>
-    <artifactId>protobuf-java-util</artifactId>
-    <version>4.31.1</version>
-</dependency>
-
-<!-- https://mvnrepository.com/artifact/io.grpc/protoc-gen-grpc-java -->
-<dependency>
-    <groupId>io.grpc</groupId>
-    <artifactId>protoc-gen-grpc-java</artifactId>
-    <version>1.74.0</version>
-    <type>pom</type>
-</dependency>
-
-	<dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
- <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
- </dependency>
-
+			<artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -96,6 +108,21 @@
 
 	<build>
 		<plugins>
+			<!-- OS Detection Plugin - MUST be first -->
+			<plugin>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+				<version>1.7.1</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>detect</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -109,26 +136,25 @@
 				</configuration>
 			</plugin>
 			
-			
-			<!-- Protobuf Compiler Plugin -->
-        <plugin>
-            <groupId>org.xolstice.maven.plugins</groupId>
-            <artifactId>protobuf-maven-plugin</artifactId>
-            <version>0.6.1</version>
-            <configuration>
-                <protocArtifact>com.google.protobuf:protoc:3.22.2:exe</protocArtifact>
-                <pluginId>grpc-java</pluginId>
-                <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.74.0:exe:${os.detected.classifier}</pluginArtifact>
-            </configuration>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>compile</goal>
-                        <goal>compile-custom</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
+			<!-- Protobuf Compiler Plugin with OS Detection -->
+			<plugin>
+				<groupId>org.xolstice.maven.plugins</groupId>
+				<artifactId>protobuf-maven-plugin</artifactId>
+				<version>0.6.1</version>
+				<configuration>
+					<protocArtifact>com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}</protocArtifact>
+					<pluginId>grpc-java</pluginId>
+					<pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}</pluginArtifact>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>compile-custom</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			
 		</plugins>
 	</build>
