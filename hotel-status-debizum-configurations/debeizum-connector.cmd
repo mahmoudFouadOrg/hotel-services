@@ -1,0 +1,1 @@
+"D:\java\sources\kafka_2.13-3.3.1\bin\windows\connect-standalone.bat" "D:\java\sources\kafka_2.13-3.3.1\config\connect-standalone.properties" config.properties

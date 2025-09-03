@@ -1,5 +1,11 @@
+logging:
+  level:
+    reactor.netty.http: DEBUG
+    reactor.netty.http.client.HttpClientConnect: DEBUG
 server:
   port: 7777
+  http2:
+   enabled: true
 spring:
   resilience4j.circuitbreaker:
    instances:
@@ -35,15 +41,21 @@ spring:
           - Path=/countries
           filters:
           - RewritePath=/countries,/
-        - id: hotels_user_search
-          uri: ${hotels_user_search_url:grpc://localhost:9000}
+        - id: countries-SERVICES-SEGMENT
+          uri: ${countries_url:http://localhost:8082}
           predicates:
-          - Path=/user/hotels/search
+          - Path=/countries/**
           filters:
-          - name: JsonToGrpc
-            args:
-             protoDescriptor: file:proto/hotelSearch.pb
-             protoFile: file:proto/hotelSearch.proto
-             service: HotelSearchService
-             method: findHotel
-        
+          - RewritePath=/countries/(?<segment>.*),/$\{segment}
+        - id: internal-hotel-search
+          uri: forward:/hotel-search/find  # Internal forwarding
+          predicates:
+            - Path=/user/hotels/search
+          filters:
+            - SetPath=/hotel-search/find
+
+grpc:
+ client:
+  grpc-server:
+   address: static://localhost:9000
+   negotiation-type: plaintext
