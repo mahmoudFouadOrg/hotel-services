@@ -69,5 +69,14 @@ public class CountryRestController {
 		 
 		 return Response.ok().build();
 	 }
+	 
+	 @PUT
+	 @Path("/de-active/internal")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 public Response activeInternal(ActiveDeCountryReq req) {
+		 countryService.activateDeactive(req);
+		 
+		 return Response.ok().build();
+	 }
 
 }
